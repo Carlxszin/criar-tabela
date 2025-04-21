@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Painel do Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="p-4">
+  <h1>Administração de Bloqueios</h1>
+  <input id="blocksite" class="form-control mb-3" placeholder="Site para bloquear (ex: tiktok.com)" />
+  <button class="btn btn-danger mb-3" onclick="blockSite()">Bloquear</button>
+  <div id="blockedList"></div>
+
+  <script>
+    async function loadBlocked() {
+      const res = await fetch('/api/blocked');
+      const blocked = await res.json();
+      document.getElementById("blockedList").innerHTML = blocked.map(site =>
+        `<div class="mb-2">${site} <button onclick="unblockSite('${site}')" class="btn btn-sm btn-outline-success">Desbloquear</button></div>`
+      ).join('');
+    }
+
+    async function blockSite() {
+      const site = document.getElementById("blocksite").value;
+      await fetch('/api/block', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ site })
+      });
+      loadBlocked();
+    }
+
+    async function unblockSite(site) {
+      await fetch('/api/unblock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ site })
+      });
+      loadBlocked();
+    }
+
+    loadBlocked();
+  </script>
+</body>
+</html>
