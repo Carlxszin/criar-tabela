@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Controle de Acesso</title>
+  <script>
+    const blockedSites = ["instagram.com", "tiktok.com", "reddit.com"];
+
+    window.onload = () => {
+      const currentSite = window.location.hostname;
+
+      if (blockedSites.includes(currentSite)) {
+        document.body.innerHTML = "<h1>Este site está bloqueado pelo administrador.</h1>";
+      }
+    };
+  </script>
+</head>
+<body>
+  <h1>Bem-vindo ao site</h1>
+</body>
+</html>
