@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Moedas 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #0d0d0d;
+            color: #d1d1d1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            padding: 25px 0;
+            background: #1a1a1a;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid #2a2a2a;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #ff3333, #ff6666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Formulário para adicionar nova moeda */
+        .add-coin-form {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            background: #1a1a1a;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid #2a2a2a;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .add-coin-form input, .add-coin-form select {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #252525;
+            color: #d1d1d1;
+            font-size: 1rem;
+            width: 150px;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .add-coin-form input:focus, .add-coin-form select:focus {
+            background: #303030;
+            outline: none;
+            box-shadow: 0 0 8px #ff3333;
+        }
+
+        .add-coin-form button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #ff3333;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .add-coin-form button:hover {
+            background: #cc0000;
+            transform: scale(1.05);
+            box-shadow: 0 0 12px rgba(255, 51, 51, 0.5);
+        }
+
+        /* Animação de Fade-in */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animação de Fade-in com escala */
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Animação de deslizamento vertical */
+        @keyframes slideDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Nova animação de saída (slide + fade + rotação) */
+        @keyframes slideFadeOut {
+            0% {
+                opacity: 1;
+                transform: translateX(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-50px) rotate(-2deg); /* Desliza para a esquerda com leve rotação */
+            }
+        }
+
+        /* Seção principal */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .coin-table {
+            border-collapse: collapse;
+            width: 90%;
+            max-width: 800px;
+            background: #151515;
+            border-radius: 10px;
+            border: 1px solid #252525;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards 0.5s;
+        }
+
+        .coin-table th, .coin-table td {
+            padding: 15px 30px;
+            text-align: left;
+            border-bottom: 1px solid #252525;
+            position: relative;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            min-width: 150px;
+        }
+
+        .coin-table th {
+            background: linear-gradient(to right, #ff3333, #cc0000);
+            color: #fff;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .coin-table td {
+            color: #b0b0b0;
+            font-weight: 400;
+        }
+
+        /* Cores específicas para as colunas */
+        .coin-table th:nth-child(1), .coin-table td:nth-child(1) {
+            background: rgba(255, 51, 51, 0.1);
+        }
+
+        .coin-table th:nth-child(2), .coin-table td:nth-child(2) {
+            background: #cc0000;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .coin-table th:nth-child(3), .coin-table td:nth-child(3) {
+            background: rgba(255, 51, 51, 0.1);
+        }
+
+        /* Animação para as linhas */
+        .coin-table tr {
+            opacity: 0;
+            animation: fadeInScale 0.5s ease forwards;
+        }
+
+        /* Efeito de brilho no hover */
+        .coin-table tr:hover {
+            background: #202020;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
+        }
+
+        /* Efeito de brilho e tooltip */
+        .coin-table td {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .coin-table td:hover {
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 10px rgba(255, 51, 51, 0.3);
+        }
+
+        .coin-table td::after {
+            content: "Clique para deletar";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #252525;
+            color: #d1d1d1;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .coin-table td:hover::after {
+            opacity: 1;
+        }
+
+        .coin-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            padding: 15px 0;
+            background: #1a1a1a;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            border-top: 1px solid #252525;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 2.5s;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        footer a {
+            color: #ff3333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #cc0000;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .coin-table th, .coin-table td {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                min-width: 120px;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .coin-table {
+                width: 95%;
+            }
+
+            .add-coin-form {
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .add-coin-form input, .add-coin-form select {
+                width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Tabela de Moedas 2025</h1>
+    </header>
+
+    <!-- Seção principal -->
+    <main>
+        <!-- Formulário para adicionar nova moeda -->
+        <form class="add-coin-form" onsubmit="addNewCoin(event)">
+            <input type="text" id="coinName" placeholder="Nome da Moeda" required>
+            <select id="coinOrigin" required>
+                <option value="" disabled selected>Origem</option>
+                <option value="BR">BR</option>
+                <option value="US">US</option>
+                <option value="EU">EU</option>
+            </select>
+            <input type="text" id="coinDate" placeholder="Data (ex: 21 ABRIL)" required>
+            <button type="submit">Adicionar Moeda</button>
+        </form>
+
+        <!-- Tabela -->
+        <table class="coin-table" id="coinTable">
+            <thead>
+                <tr>
+                    <th>Nome Moedas</th>
+                    <th>Origem</th>
+                    <th>Data 2025</th>
+                </tr>
+            </thead>
+            <tbody id="coinTableBody">
+                <!-- Tabela começa vazia -->
+            </tbody>
+        </table>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Desenvolvido por Grok | © 2025 | <a href="https://x.ai" target="_blank">Visite xAI</a></p>
+    </footer>
+
+    <script>
+        // Função para normalizar o formato da data
+        function normalizeDate(dateStr) {
+            let normalized = dateStr.trim().toUpperCase();
+            normalized = normalized.replace(/\s*DE\s*/i, ' ');
+            const parts = normalized.split(' ');
+            if (parts.length === 2) {
+                const day = parts[0].padStart(2, '0');
+                const month = parts[1].slice(0, 3);
+                return `${day} ${month}`;
+            }
+            return normalized;
+        }
+
+        // Função para converter data em formato comparável
+        function getDateValue(dateStr) {
+            if (dateStr === 'PRE-VENDA') return Infinity;
+            const [day, month] = dateStr.split(' ');
+            const monthMap = {
+                'JAN': 1, 'FEV': 2, 'MAR': 3, 'ABR': 4, 'MAI': 5, 'JUN': 6,
+                'JUL': 7, 'AGO': 8, 'SET': 9, 'OUT': 10, 'NOV': 11, 'DEZ': 12
+            };
+            const monthNum = monthMap[month] || 0;
+            return new Date(2025, monthNum - 1, parseInt(day));
+        }
+
+        // Função para carregar moedas do localStorage
+        function loadCoins() {
+            const savedCoins = JSON.parse(localStorage.getItem('coins')) || [];
+            const tbody = document.getElementById('coinTableBody');
+            tbody.innerHTML = ''; // Limpar a tabela antes de recarregar
+            savedCoins.forEach((coin, index) => {
+                const newRow = document.createElement('tr');
+                newRow.setAttribute('onclick', 'deleteRow(this)');
+                newRow.innerHTML = `
+                    <td>${coin.name}</td>
+                    <td>${coin.origin}</td>
+                    <td>${coin.date}</td>
+                `;
+                tbody.appendChild(newRow);
+                newRow.style.animationDelay = `${index * 0.1}s`;
+            });
+        }
+
+        // Função para adicionar nova moeda
+        function addNewCoin(event) {
+            event.preventDefault();
+
+            const coinName = document.getElementById('coinName').value;
+            const coinOrigin = document.getElementById('coinOrigin').value;
+            const coinDate = normalizeDate(document.getElementById('coinDate').value);
+
+            const newCoin = {
+                name: coinName,
+                origin: coinOrigin,
+                date: coinDate
+            };
+
+            // Salvar no localStorage
+            const savedCoins = JSON.parse(localStorage.getItem('coins')) || [];
+            savedCoins.push(newCoin);
+            savedCoins.sort((a, b) => getDateValue(a.date) - getDateValue(b.date));
+            localStorage.setItem('coins', JSON.stringify(savedCoins));
+
+            // Limpar e recarregar a tabela
+            const tbody = document.getElementById('coinTableBody');
+            tbody.innerHTML = '';
+            savedCoins.forEach((coin, index) => {
+                const newRow = document.createElement('tr');
+                newRow.setAttribute('onclick', 'deleteRow(this)');
+                newRow.innerHTML = `
+                    <td>${coin.name}</td>
+                    <td>${coin.origin}</td>
+                    <td>${coin.date}</td>
+                `;
+                tbody.appendChild(newRow);
+                newRow.style.opacity = '0';
+                newRow.style.transform = 'translateY(-20px)';
+                newRow.style.animation = 'slideDown 0.5s ease forwards';
+                newRow.style.animationDelay = `${index * 0.1}s`;
+            });
+
+            // Resetar o formulário
+            document.getElementById('coinName').value = '';
+            document.getElementById('coinOrigin').value = '';
+            document.getElementById('coinDate').value = '';
+        }
+
+        // Função para deletar uma moeda ao clicar na linha
+        function deleteRow(row) {
+            const coinName = row.cells[0].textContent;
+            // Exibir confirmação de exclusão
+            const confirmDelete = confirm(`Tem certeza que deseja excluir a moeda "${coinName}"?`);
+            
+            if (confirmDelete) {
+                // Adicionar animação de saída
+                row.style.animation = 'slideFadeOut 0.5s ease forwards'; // Nova animação
+                
+                // Esperar a animação terminar antes de remover a linha
+                setTimeout(() => {
+                    const coinOrigin = row.cells[1].textContent;
+                    const coinDate = row.cells[2].textContent;
+
+                    // Recuperar moedas do localStorage
+                    let savedCoins = JSON.parse(localStorage.getItem('coins')) || [];
+
+                    // Filtrar a moeda a ser deletada
+                    savedCoins = savedCoins.filter(coin => 
+                        coin.name !== coinName || 
+                        coin.origin !== coinOrigin || 
+                        coin.date !== coinDate
+                    );
+
+                    // Atualizar o localStorage
+                    localStorage.setItem('coins', JSON.stringify(savedCoins));
+
+                    // Recarregar a tabela
+                    loadCoins();
+                }, 500); // Tempo da nova animação (0.5s)
+            }
+        }
+
+        // Carregar moedas ao iniciar
+        window.onload = loadCoins;
+    </script>
+</body>
+  </html>
